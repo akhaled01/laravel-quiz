@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\DB;
 
 class QuestionSeeder extends Seeder
 {
+    /**
+     * chatGPT deserves a biryani for this
+     */
     public function run(): void
     {
         $questions = [
