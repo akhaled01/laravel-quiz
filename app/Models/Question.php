@@ -11,4 +11,9 @@ class Question extends Model
     const UPDATED_AT = null;
     const CREATED_AT = null;
     protected $fillable = ["question_content", "question_xp", "category_id"];
+
+    public function UserAnswer()
+    {
+        return $this->hasMany(UserAnswer::class, "question_id", "question_id");
+    }
 }

@@ -10,4 +10,8 @@ class UserAnswer extends Model
     const UPDATED_AT = null;
     const CREATED_AT = null;
     protected $fillable = ["user_id", "question_id", "is_correct"];
+
+    public function question () {
+        return $this->belongsTo(Question::class, 'question_id', 'question_id');
+    }
 }
