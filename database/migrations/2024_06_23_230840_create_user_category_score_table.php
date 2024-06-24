@@ -15,8 +15,8 @@ return new class extends Migration {
             $table->integer("category_id");
             $table->integer("score");
 
-            $table->foreign("user_id")->references("user_id")->on("user");
-            $table->foreign("category_id")->references("category_id")->on("category");
+            $table->foreign("user_id")->references("user_id")->on("user")->cascadeOnDelete();
+            $table->foreign("category_id")->references("category_id")->on("category")->cascadeOnDelete();
         });
     }
 

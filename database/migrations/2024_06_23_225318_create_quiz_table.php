@@ -11,12 +11,12 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('quiz', function (Blueprint $table) {
-            $table->uuid('quiz_id');
+            $table->uuid('quiz_id')->primary();
             $table->integer('quiz_correct_num');
             $table->integer('quiz_xp_gained');
             $table->string("user_id");
 
-            $table->foreign("user_id")->references("user_id")->on("user");
+            $table->foreign("user_id")->references("user_id")->on("user")->cascadeOnDelete();
         });
     }
 

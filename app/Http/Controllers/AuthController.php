@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\User;
+use App\Models\UserCategoryScore;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -26,6 +28,17 @@ class AuthController extends Controller
                 'user_email' => $req->user_email,
                 'user_password' => Hash::make($req->user_password),
             ]);
+
+            $cats = Category::all();
+
+            // create user_category_score records
+            foreach ($cats as $cat) {
+                UserCategoryScore::create([
+                    "user_id" => $user->user_id,
+                    "category_id" => $cat->getAttribute("category_id"),
+                    "score" => 0
+                ]);
+            }
 
             return response([
                 "success" => sprintf("user %s created successfully", $user->getAttribute("user_name"))
