@@ -11,6 +11,7 @@ return new class extends Migration
         Schema::create('user_answer', function (Blueprint $table) {
             $table->string("user_id");
             $table->integer("question_id");
+            $table->boolean("is_correct");
 
             $table->foreign("user_id")->references("user_id")->on("user");
             $table->foreign("question_id")->references("question_id")->on("question");
