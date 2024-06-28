@@ -69,6 +69,10 @@ class QuizController extends Controller
         ]);
 
         $user = User::where('user_id', $req->user_id)->first();
+        $result_array = [
+            'correct_num' => $req->correct_num,
+            'cat_answered' => []
+        ];
 
         if (!$user) {
             return response()->json(['error' => 'User not found'], 404);
@@ -91,6 +95,11 @@ class QuizController extends Controller
                 Log::warning("Question with ID $question_id not found");
                 continue;
             }
+
+            array_push($result_array["cat_answered"], [
+                'category' => Category::where("categroy_id", $question_object->categroy_id)->first(),
+                'is_answered' => $is_answered
+            ]);
 
             // Update scores per category if the question is answered correctly
             if ($is_answered) {
@@ -125,9 +134,18 @@ class QuizController extends Controller
         $user->update(['user_total_xp' => $new_total_xp]);
 
         return response([
-            'success' => 'Quiz data saved successfully!'
+            'success' => 'Quiz data saved successfully!',
+            'results' => $result_array
         ], 201);
     }
 
+    public function get_all(Request $req)
+    {
+        $user_id = $req->user_id;
+        $quizzes = Quiz::where("user_id", $user_id)->get();
 
+        return response()->json([
+            "quizzes" => $quizzes
+        ], 200);
+    }
 }
