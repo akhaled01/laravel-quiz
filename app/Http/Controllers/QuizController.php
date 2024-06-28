@@ -79,7 +79,7 @@ class QuizController extends Controller
         }
 
         // Create the quiz record
-        $quiz = Quiz::create([
+        Quiz::create([
             'quiz_correct_num' => $req->correct_num,
             'quiz_xp_gained' => $req->total_xp_gained,
             'user_id' => $user->getAttribute('user_id')
@@ -97,7 +97,7 @@ class QuizController extends Controller
             }
 
             array_push($result_array["cat_answered"], [
-                'category' => Category::where("categroy_id", $question_object->categroy_id)->first(),
+                'category' => Category::where("category_id", $question_object->category_id)->first()->category_name,
                 'is_answered' => $is_answered
             ]);
 
