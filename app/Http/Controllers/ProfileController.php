@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\UserAnswer;
+use Illuminate\Support\Facades\Log;
 
 class ProfileController extends Controller
 {
@@ -64,9 +65,10 @@ class ProfileController extends Controller
         return $data_array;
     }
 
-    public function get(Request $req)
+    public function get(Request $req, string $id)
     {
-        $user = User::where("user_id", $req->user_id)->first();
+        Log::info($id);
+        $user = User::where("user_id", $id)->first();
         if (!$user) {
             return response()->json(['error' => 'uuid not found'], 401);
         }
@@ -74,6 +76,7 @@ class ProfileController extends Controller
         $user_xp = $user->user_total_xp;
         $user_name = $user->user_name;
         $user_email = $user->user_email;
+        $user_xp = $user->user_total_xp;
 
         $user_rank = "";
         if ($user_xp < 1500) {
@@ -86,14 +89,15 @@ class ProfileController extends Controller
             $user_rank = "Epic Quizer";
         }
 
-        $correct_answer_percentages = $this->GetCorrectAnswerPercentPerCategory($req->user_id);
-        $correct_answer_numbers = $this->GetCorrectAnswerNumberPerCategory($req->user_id);
-        $total_answer_numbers = $this->GetTotalAnswerNumberPerCategory($req->user_id);
+        $correct_answer_percentages = $this->GetCorrectAnswerPercentPerCategory($id);
+        $correct_answer_numbers = $this->GetCorrectAnswerNumberPerCategory($id);
+        $total_answer_numbers = $this->GetTotalAnswerNumberPerCategory($id);
 
         return response()->json([
             "username" => $user_name,
             "email" => $user_email,
             "rank" => $user_rank,
+            "xp" => $user_xp,
             "correct_percentages" => $correct_answer_percentages,
             "correct_numbers" => $correct_answer_numbers,
             "total_numbers" => $total_answer_numbers
