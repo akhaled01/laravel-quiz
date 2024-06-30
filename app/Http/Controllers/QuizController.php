@@ -22,10 +22,10 @@ class QuizController extends Controller
      * `user_answers` table. If the user answers all questions for a category,
      * then the method selects any one
      */
-    public function new(Request $req)
+    public function new(Request $req, string $id)
     {
         $data_array = [];
-        $userId = $req->user_id;
+        $userId = $id;
         $categories = Category::all();
 
         foreach ($categories as $category) {
@@ -139,9 +139,9 @@ class QuizController extends Controller
         ], 201);
     }
 
-    public function get_all(Request $req)
+    public function get_all(Request $req, string $id)
     {
-        $user_id = $req->user_id;
+        $user_id = $id;
         $quizzes = Quiz::where("user_id", $user_id)->get();
 
         return response()->json([
