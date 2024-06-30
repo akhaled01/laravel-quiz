@@ -67,7 +67,6 @@ class AuthController extends Controller
 
         if (Hash::check($req->user_password, $user->getAttribute("user_password"))) {
             return response()->json([
-                'token' => bin2hex(random_bytes(20)),
                 'user_id' => $user->getAttribute("user_id")
             ], 200);
         } else {
