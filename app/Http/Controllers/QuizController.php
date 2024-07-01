@@ -29,6 +29,7 @@ class QuizController extends Controller
         $categories = Category::all();
 
         foreach ($categories as $category) {
+            Log::info($category->category_id . " " . $category->category_name);
             // ensure question has not been answered by that user before
             $question = Question::leftJoin('user_answer', function ($join) use ($userId) {
                 $join->on('question.question_id', '=', 'user_answer.question_id')
