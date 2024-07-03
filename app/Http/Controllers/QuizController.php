@@ -24,6 +24,7 @@ class QuizController extends Controller
      */
     public function new(Request $req, string $id)
     {
+        Log::info("recv new quiz request");
         $data_array = [];
         $userId = $id;
         $categories = Category::all();
@@ -45,6 +46,14 @@ class QuizController extends Controller
                 $question = Question::where('category_id', $category->category_id)->first();
             }
 
+            Log::info([
+                $question->question_id .
+                    $question->question_content .
+                    $category->category_name .
+                    $question->question_xp .
+                    Answer::where("question_id", $question->question_id)->get()
+            ]);
+
             array_push($data_array, [
                 "question_id" => $question->question_id,
                 "question_content" => $question->question_content,
@@ -62,13 +71,6 @@ class QuizController extends Controller
      */
     public function save(Request $req)
     {
-        $this->validate($req, [
-            'user_id' => 'required|string',
-            'correct_num' => 'required|integer',
-            'total_xp_gained' => 'required|integer',
-            'question_details' => 'required|array|min:5'
-        ]);
-
         $user = User::where('user_id', $req->user_id)->first();
         $result_array = [
             'correct_num' => $req->correct_num,
@@ -76,6 +78,7 @@ class QuizController extends Controller
         ];
 
         if (!$user) {
+            Log::alert("user " . $req->user_id . "not there");
             return response()->json(['error' => 'User not found'], 404);
         }
 

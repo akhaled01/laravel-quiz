@@ -18,7 +18,7 @@ class AuthController extends Controller
     {
         try {
             $this->validate($req, [
-                'user_name' => 'required|string|max:10',
+                'user_name' => 'required|string|max:10|unique:user,user_name',
                 'user_email' => 'required|string|email|max:255|unique:user',
                 'user_password' => 'required|string|min:6',
             ]);
@@ -55,8 +55,8 @@ class AuthController extends Controller
     public function login(Request $req)
     {
         $this->validate($req, [
-            'user_email' => 'required|string|email',
-            'user_password' => 'required|string|min:6',
+            'user_email' => 'required|string',
+            'user_password' => 'required|string',
         ]);
 
         $user = User::where("user_email", $req->user_email)->first();
