@@ -9,7 +9,7 @@ class LeaderboardController extends Controller
 {
     public function get()
     {
-        $toppers = DB::table('user')->orderBy("user_total_xp")->limit(10)->get();
+        $toppers = DB::table('user')->orderBy("user_total_xp", 'desc')->limit(10)->get();
         $data_array = [];
 
         for ($i = 0; $i < count($toppers); $i++) {
